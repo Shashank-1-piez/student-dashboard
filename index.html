@@ -2,52 +2,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Student Dashboard</h1>
-  </header>
-  <nav>
-    <ul>
-      <li><a href="#">Attendance</a></li>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Timetable</a></li>
-      <li><a href="#">Grades</a></li>
-      <li><a href="#">Assignments</a></li>
-      <li><a href="#">Events</a></li>
-      <li><a href="#">Leave Request</a></li>
-      <li><a href="#">Materials</a></li>
-      <li><a href="#">Notifications</a></li>
-      <li><a href="#">Feedback</a></li>
-    </ul>
-  </nav>
-  <main>
-    <section>
-      <h2>Daily Attendance</h2>
-      <p>Status: Present ✅</p>
-    </section>
-    <section>
-      <h2>Upcoming Exams</h2>
-      <ul>
-        <li>Math - April 25</li>
-        <li>Physics - April 27</li>
-      </ul>
-    </section>
-    <section>
-      <h2>Recent Grades</h2>
-      <ul>
-        <li>Math: 90%</li>
-        <li>Physics: 85%</li>
-      </ul>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2025 Student Dashboard</p>
-  </footer>
-  <script src="script.js"></script>
+    <header>
+        <h1>Student Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Attendance</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/timetable">Timetable</a></li>
+                <li><a href="/grades">Grades</a></li>
+                <li><a href="/assignments">Assignments</a></li>
+                <li><a href="/events">Events</a></li>
+                <li><a href="/leave_request">Leave Request</a></li>
+                <li><a href="/materials">Materials</a></li>
+                <li><a href="/notifications">Notifications</a></li>
+                <li><a href="/feedback">Feedback</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="dashboard-section">
+            <h2>Daily Attendance</h2>
+            {% if attendance %}
+                <p>Status: {{ attendance.status }} {% if attendance.status == 'Present' %}✅{% endif %}</p>
+                <p class="last-updated">Last Updated: {{ attendance.last_updated }}</p>
+            {% else %}
+                <p>Attendance data not available.</p>
+            {% endif %}
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Upcoming Exams</h2>
+            {% if upcoming_exams %}
+                <ul>
+                    {% for exam in upcoming_exams %}
+                    <li>{{ exam.subject }} - {{ exam.date }} at {{ exam.time }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No upcoming exams.</p>
+            {% endif %}
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Recent Grades</h2>
+            {% if recent_grades %}
+                <ul>
+                    {% for grade in recent_grades %}
+                    <li>{{ grade.subject }}: {{ grade.grade }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No recent grades available.</p>
+            {% endif %}
+        </section>
+    </main>
 </body>
 </html>
