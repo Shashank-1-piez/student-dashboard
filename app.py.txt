@@ -1,0 +1,138 @@
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+# --- Dummy Data (Replace with Database Interaction Later) ---
+# In a real application, this data would be fetched from a database
+student_data = {
+    '123': {  # Example student ID
+        'attendance': {'status': 'Present', 'last_updated': 'April 20, 2025 7:45 PM IST'},
+        'upcoming_exams': [
+            {'subject': 'Math', 'date': 'April 25, 2025', 'time': '10:00 AM'},
+            {'subject': 'Physics', 'date': 'April 27, 2025', 'time': '02:00 PM'}
+        ],
+        'recent_grades': [
+            {'subject': 'Math', 'grade': '90%'},
+            {'subject': 'Physics', 'grade': '85%'},
+            {'subject': 'Chemistry', 'grade': '78%'}
+        ],
+        'timetable': [
+            {'day': 'Monday', 'period_1': 'Math', 'period_2': 'Science', 'period_3': 'English'},
+            {'day': 'Tuesday', 'period_1': 'Science', 'period_2': 'Math', 'period_3': 'History'}
+            # ... more timetable data
+        ],
+        'assignments': [
+            {'title': 'Math Assignment 1', 'due_date': 'April 22, 2025'},
+            {'title': 'Science Report', 'due_date': 'April 24, 2025'}
+            # ... more assignments
+        ],
+        'events': [
+            {'name': 'Science Fair', 'date': 'May 5, 2025'},
+            {'name': 'PTA Meeting', 'date': 'May 10, 2025'}
+            # ... more events
+        ],
+        'materials': [
+            {'subject': 'Math', 'link': '/static/math_notes.pdf'},
+            {'subject': 'Science', 'link': '/static/science_book.pdf'}
+            # ... more materials
+        ],
+        'notifications': [
+            {'message': 'Upcoming Math exam on April 25th.'},
+            {'message': 'Science report due on April 24th.'}
+            # ... more notifications
+        ]
+    },
+    '456': {  # Another example student
+        'attendance': {'status': 'Absent', 'last_updated': 'April 20, 2025 7:30 PM IST'},
+        'upcoming_exams': [
+            {'subject': 'History', 'date': 'April 26, 2025', 'time': '11:00 AM'}
+        ],
+        'recent_grades': [
+            {'subject': 'History', 'grade': '92%'},
+            {'subject': 'Geography', 'grade': '88%'}
+        ],
+        'timetable': [],
+        'assignments': [],
+        'events': [],
+        'materials': [],
+        'notifications': []
+    }
+    # ... more student data
+}
+
+# --- Routes ---
+@app.route('/')
+def index():
+    # In a real application, you would get the student ID from the logged-in user's session
+    student_id = '123'
+    data = student_data.get(student_id)
+    if data:
+        return render_template('index.html',
+                               attendance=data['attendance'],
+                               upcoming_exams=data['upcoming_exams'],
+                               recent_grades=data['recent_grades'],
+                               timetable=data.get('timetable', []),
+                               assignments=data.get('assignments', []),
+                               events=data.get('events', []),
+                               materials=data.get('materials', []),
+                               notifications=data.get('notifications', []))
+    else:
+        return "Student data not found."
+
+# --- More Routes for other sections (basic structure) ---
+@app.route('/profile')
+def profile():
+    return "Profile page content will go here."
+
+@app.route('/timetable')
+def view_timetable():
+    student_id = '123'
+    data = student_data.get(student_id)
+    timetable = data.get('timetable', []) if data else []
+    return render_template('timetable.html', timetable=timetable)
+
+@app.route('/grades')
+def view_grades():
+    student_id = '123'
+    data = student_data.get(student_id)
+    recent_grades = data.get('recent_grades', []) if data else []
+    return render_template('grades.html', recent_grades=recent_grades)
+
+@app.route('/assignments')
+def view_assignments():
+    student_id = '123'
+    data = student_data.get(student_id)
+    assignments = data.get('assignments', []) if data else []
+    return render_template('assignments.html', assignments=assignments)
+
+@app.route('/events')
+def view_events():
+    student_id = '123'
+    data = student_data.get(student_id)
+    events = data.get('events', []) if data else []
+    return render_template('events.html', events=events)
+
+@app.route('/leave_request')
+def leave_request():
+    return "Leave request functionality will go here."
+
+@app.route('/materials')
+def view_materials():
+    student_id = '123'
+    data = student_data.get(student_id)
+    materials = data.get('materials', []) if data else []
+    return render_template('materials.html', materials=materials)
+
+@app.route('/notifications')
+def view_notifications():
+    student_id = '123'
+    data = student_data.get(student_id)
+    notifications = data.get('notifications', []) if data else []
+    return render_template('notifications.html', notifications=notifications)
+
+@app.route('/feedback')
+def feedback():
+    return "Feedback functionality will go here."
+
+if __name__ == '__main__':
+    app.run(debug=True)
