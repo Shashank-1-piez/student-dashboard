@@ -1,0 +1,36 @@
+document.addEventListener("DOMContentLoaded", () => {
+  // Sample attendance data
+  const attendanceData = [
+    { date: "2025-04-01", status: "Present" },
+    { date: "2025-04-02", status: "Absent" },
+  ];
+
+  // Sample grades data
+  const gradesData = [80, 90, 75, 85];
+
+  // Populate attendance table
+  const attendanceTable = document.querySelector("#attendance table");
+  attendanceData.forEach(record => {
+    const row = attendanceTable.insertRow();
+    const dateCell = row.insertCell(0);
+    const statusCell = row.insertCell(1);
+    dateCell.textContent = record.date;
+    statusCell.textContent = record.status;
+  });
+
+  // Create chart for grades
+  const ctx = document.getElementById("gradesChart").getContext("2d");
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["Quiz 1", "Quiz 2", "Assignment 1", "Exam 1"],
+      datasets: [{
+        label: "Grades",
+        data: gradesData,
+        borderColor: "#6200ea",
+        borderWidth: 2,
+        fill: false,
+      }]
+    }
+  });
+});

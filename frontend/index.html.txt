@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Student Academic Dashboard</h1>
+  </header>
+  <main>
+    <section id="attendance">
+      <h2>Attendance</h2>
+      <table>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+        <!-- Rows will be dynamically added -->
+      </table>
+    </section>
+    <section id="grades">
+      <h2>Grades</h2>
+      <canvas id="gradesChart"></canvas>
+    </section>
+    <section id="timetable">
+      <h2>Timetable</h2>
+      <div id="schedule">
+        <!-- Timetable entries will be dynamically added -->
+      </div>
+    </section>
+  </main>
+  <script src="scripts.js"></script>
+</body>
+</html>
