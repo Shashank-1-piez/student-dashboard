@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Dashboard</title>
 
-  <!-- AOS CSS -->
+  <!-- AOS CSS (For Scroll Animations) -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
-  <!-- Bootstrap CSS for layout -->
+  <!-- Bootstrap CSS for Layout -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- Chart.js for Progress Chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     /* Dark Mode Styles */
@@ -18,29 +21,50 @@
       color: white;
     }
 
-    /* Optional: Add some transitions for smooth color change */
-    body {
-      transition: background-color 0.3s ease, color 0.3s ease;
+    /* Sidebar Styling */
+    .sidebar {
+      height: 100vh;
+      width: 250px;
+      background-color: #222;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 50px;
     }
 
-    .navbar {
-      margin-bottom: 30px;
+    .sidebar a {
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background-color: #575757;
+    }
+
+    /* Main Content */
+    .content {
+      margin-left: 260px;
+      padding: 20px;
     }
 
     .section-header {
       text-align: center;
-      margin: 20px 0;
+      margin: 30px 0;
     }
 
     .content-section {
-      margin: 20px 0;
-      padding: 20px;
-      background-color: #f9f9f9;
+      margin-bottom: 40px;
+      padding: 30px;
+      background-color: #f4f4f4;
       border-radius: 8px;
     }
 
     .content-section h3 {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
     }
 
     .content-section p {
@@ -51,6 +75,28 @@
     .content-section {
       transition: all 0.3s ease;
     }
+
+    .dark-mode .sidebar {
+      background-color: #121212;
+    }
+
+    .dark-mode .content-section {
+      background-color: #333;
+      color: white;
+    }
+
+    .dark-mode .sidebar a:hover {
+      background-color: #444;
+    }
+
+    /* Header Styling */
+    .header {
+      background-color: #007bff;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      font-size: 1.5rem;
+    }
   </style>
 </head>
 <body>
@@ -58,64 +104,52 @@
   <!-- Dark Mode Toggle Button -->
   <button class="btn btn-dark" style="position: fixed; top: 20px; right: 20px;" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Student Dashboard</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Tasks</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Attendance</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Progress</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="#">Dashboard</a>
+    <a href="#">Tasks</a>
+    <a href="#">Attendance</a>
+    <a href="#">Progress</a>
+    <a href="#">Settings</a>
+  </div>
 
-  <!-- Content Sections with Animations -->
-  <section class="tasks-section content-section" data-aos="fade-up">
-    <div class="container">
+  <!-- Main Content -->
+  <div class="content">
+    <div class="header">
+      <h3>Welcome, [Student Name]</h3>
+    </div>
+
+    <!-- Tasks Section -->
+    <section class="tasks-section content-section" data-aos="fade-up">
       <div class="section-header">
-        <h2>Tasks</h2>
+        <h3>Tasks for Today</h3>
       </div>
-      <p>Here are the tasks for today.</p>
-    </div>
-  </section>
+      <p>Here are the tasks for today. Complete them on time to stay on track.</p>
+    </section>
 
-  <section class="attendance-section content-section" data-aos="fade-down">
-    <div class="container">
+    <!-- Attendance Section -->
+    <section class="attendance-section content-section" data-aos="fade-down">
       <div class="section-header">
-        <h2>Attendance</h2>
+        <h3>Attendance</h3>
       </div>
-      <p>Attendance details will be shown here.</p>
-    </div>
-  </section>
+      <p>Attendance details will be shown here. Keep track of your attendance.</p>
+    </section>
 
-  <section class="progress-section content-section" data-aos="fade-left">
-    <div class="container">
+    <!-- Progress Section with Chart -->
+    <section class="progress-section content-section" data-aos="fade-left">
       <div class="section-header">
-        <h2>Progress</h2>
+        <h3>Your Progress</h3>
       </div>
-      <p>Your progress will be displayed here.</p>
-    </div>
-  </section>
+      <canvas id="progressChart"></canvas>
+    </section>
+  </div>
 
-  <!-- Bootstrap JS and dependencies (optional) -->
+  <!-- Bootstrap JS and dependencies -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <!-- AOS JS -->
+  <!-- AOS JS for Animations -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     // Initialize AOS
@@ -125,6 +159,29 @@
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
     }
+
+    // Chart.js for Progress
+    var ctx = document.getElementById('progressChart').getContext('2d');
+    var progressChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Task 1', 'Task 2', 'Task 3', 'Task 4'],
+        datasets: [{
+          label: 'Progress',
+          data: [75, 90, 60, 85], // Example data
+          backgroundColor: 'rgba(0, 123, 255, 0.5)',
+          borderColor: 'rgba(0, 123, 255, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   </script>
 
 </body>
