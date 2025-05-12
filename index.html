@@ -1,66 +1,72 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+
+  <!-- AOS CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <!-- Bootstrap CSS (if you're using it) -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    /* Dark Mode Styles */
+    .dark-mode {
+      background-color: #121212;
+      color: white;
+    }
+
+    /* Optional: Add some transitions for smooth color change */
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Student Dashboard</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Attendance</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/timetable">Timetable</a></li>
-                <li><a href="/grades">Grades</a></li>
-                <li><a href="/assignments">Assignments</a></li>
-                <li><a href="/events">Events</a></li>
-                <li><a href="/leave_request">Leave Request</a></li>
-                <li><a href="/materials">Materials</a></li>
-                <li><a href="/notifications">Notifications</a></li>
-                <li><a href="/feedback">Feedback</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="dashboard-section">
-            <h2>Daily Attendance</h2>
-            {% if attendance %}
-                <p>Status: {{ attendance.status }} {% if attendance.status == 'Present' %}✅{% endif %}</p>
-                <p class="last-updated">Last Updated: {{ attendance.last_updated }}</p>
-            {% else %}
-                <p>Attendance data not available.</p>
-            {% endif %}
-        </section>
 
-        <section class="dashboard-section">
-            <h2>Upcoming Exams</h2>
-            {% if upcoming_exams %}
-                <ul>
-                    {% for exam in upcoming_exams %}
-                    <li>{{ exam.subject }} - {{ exam.date }} at {{ exam.time }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No upcoming exams.</p>
-            {% endif %}
-        </section>
+  <!-- Dark Mode Toggle Button -->
+  <button class="btn btn-secondary" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 
-        <section class="dashboard-section">
-            <h2>Recent Grades</h2>
-            {% if recent_grades %}
-                <ul>
-                    {% for grade in recent_grades %}
-                    <li>{{ grade.subject }}: {{ grade.grade }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No recent grades available.</p>
-            {% endif %}
-        </section>
-    </main>
+  <!-- Section with AOS Animation -->
+  <section class="tasks-section" data-aos="fade-up">
+    <div class="container">
+      <h2>Tasks</h2>
+      <p>Here are the tasks for today.</p>
+    </div>
+  </section>
+
+  <section class="attendance-section" data-aos="fade-down">
+    <div class="container">
+      <h2>Attendance</h2>
+      <p>Attendance details will be shown here.</p>
+    </div>
+  </section>
+
+  <section class="progress-section" data-aos="fade-left">
+    <div class="container">
+      <h2>Progress</h2>
+      <p>Your progress will be displayed here.</p>
+    </div>
+  </section>
+
+  <!-- Include Bootstrap JS (optional, if needed for other components) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init();
+
+    // Dark Mode Toggle Function
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
 </body>
 </html>
+
