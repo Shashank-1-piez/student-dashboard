@@ -5,23 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Dashboard</title>
 
-  <!-- AOS CSS (For Scroll Animations) -->
+  <!-- AOS CSS for Animations -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
-  <!-- Bootstrap CSS for Layout -->
+  <!-- Bootstrap and Font Awesome CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <!-- Chart.js for Progress Chart -->
+  <!-- Chart.js for Progress Graph -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* Dark Mode Styles */
+    /* Dark Mode */
     .dark-mode {
       background-color: #121212;
       color: white;
     }
 
-    /* Sidebar Styling */
+    /* Sidebar */
     .sidebar {
       height: 100vh;
       width: 250px;
@@ -31,6 +32,7 @@
       top: 0;
       left: 0;
       padding-top: 50px;
+      box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.2);
     }
 
     .sidebar a {
@@ -44,15 +46,21 @@
       background-color: #575757;
     }
 
-    /* Main Content */
+    /* Main Content Area */
     .content {
       margin-left: 260px;
-      padding: 20px;
+      padding: 30px;
     }
 
-    .section-header {
+    .header {
+      background-color: #007bff;
+      padding: 20px;
+      color: white;
       text-align: center;
-      margin: 30px 0;
+      font-size: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .content-section {
@@ -67,15 +75,56 @@
       margin-bottom: 15px;
     }
 
-    .content-section p {
-      font-size: 1rem;
+    .task-list {
+      list-style-type: none;
+      padding: 0;
     }
 
-    /* Smooth transition for content sections */
-    .content-section {
-      transition: all 0.3s ease;
+    .task-list li {
+      background: #e0e0e0;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
     }
 
+    .task-list li.completed {
+      background: #b0e57c;
+      text-decoration: line-through;
+    }
+
+    .task-list li .task-name {
+      font-weight: bold;
+    }
+
+    /* Calendar */
+    .calendar-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .calendar {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Floating Action Button */
+    .fab-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 24px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+      cursor: pointer;
+    }
+
+    /* Dark Mode Adjustments */
     .dark-mode .sidebar {
       background-color: #121212;
     }
@@ -89,13 +138,8 @@
       background-color: #444;
     }
 
-    /* Header Styling */
-    .header {
-      background-color: #007bff;
-      padding: 20px;
-      color: white;
-      text-align: center;
-      font-size: 1.5rem;
+    .dark-mode .header {
+      background-color: #1a73e8;
     }
   </style>
 </head>
@@ -104,13 +148,13 @@
   <!-- Dark Mode Toggle Button -->
   <button class="btn btn-dark" style="position: fixed; top: 20px; right: 20px;" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 
-  <!-- Sidebar -->
+  <!-- Sidebar Navigation -->
   <div class="sidebar">
-    <a href="#">Dashboard</a>
-    <a href="#">Tasks</a>
-    <a href="#">Attendance</a>
-    <a href="#">Progress</a>
-    <a href="#">Settings</a>
+    <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="#"><i class="fas fa-tasks"></i> Tasks</a>
+    <a href="#"><i class="fas fa-check-circle"></i> Attendance</a>
+    <a href="#"><i class="fas fa-chart-line"></i> Progress</a>
+    <a href="#"><i class="fas fa-cogs"></i> Settings</a>
   </div>
 
   <!-- Main Content -->
@@ -121,27 +165,38 @@
 
     <!-- Tasks Section -->
     <section class="tasks-section content-section" data-aos="fade-up">
-      <div class="section-header">
-        <h3>Tasks for Today</h3>
-      </div>
-      <p>Here are the tasks for today. Complete them on time to stay on track.</p>
+      <h3>Tasks for Today</h3>
+      <ul class="task-list">
+        <li class="task-item">
+          <input type="checkbox"> <span class="task-name">Complete Assignment 1</span>
+        </li>
+        <li class="task-item">
+          <input type="checkbox"> <span class="task-name">Attend Lecture 2</span>
+        </li>
+        <li class="task-item completed">
+          <input type="checkbox" checked disabled> <span class="task-name">Submit Homework</span>
+        </li>
+      </ul>
     </section>
 
-    <!-- Attendance Section -->
-    <section class="attendance-section content-section" data-aos="fade-down">
-      <div class="section-header">
-        <h3>Attendance</h3>
-      </div>
-      <p>Attendance details will be shown here. Keep track of your attendance.</p>
-    </section>
-
-    <!-- Progress Section with Chart -->
-    <section class="progress-section content-section" data-aos="fade-left">
-      <div class="section-header">
-        <h3>Your Progress</h3>
-      </div>
+    <!-- Progress Section (Chart) -->
+    <section class="progress-section content-section" data-aos="fade-down">
+      <h3>Your Progress</h3>
       <canvas id="progressChart"></canvas>
     </section>
+
+    <!-- Calendar Section -->
+    <section class="calendar-section content-section" data-aos="fade-left">
+      <h3>Your Calendar</h3>
+      <div class="calendar-container">
+        <div id="calendar"></div>
+      </div>
+    </section>
+
+    <!-- Floating Action Button (Add Task) -->
+    <div class="fab-btn" onclick="addTask()">
+      <i class="fas fa-plus"></i>
+    </div>
   </div>
 
   <!-- Bootstrap JS and dependencies -->
@@ -149,18 +204,23 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <!-- AOS JS for Animations -->
+  <!-- AOS JS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Calendar JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.js"></script>
+
+  <!-- Chart.js JS -->
   <script>
-    // Initialize AOS
+    // Initialize AOS Animations
     AOS.init();
 
-    // Dark Mode Toggle Function
+    // Toggle Dark Mode
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
     }
 
-    // Chart.js for Progress
+    // Chart.js - Progress
     var ctx = document.getElementById('progressChart').getContext('2d');
     var progressChart = new Chart(ctx, {
       type: 'bar',
@@ -168,7 +228,7 @@
         labels: ['Task 1', 'Task 2', 'Task 3', 'Task 4'],
         datasets: [{
           label: 'Progress',
-          data: [75, 90, 60, 85], // Example data
+          data: [75, 90, 60, 85],
           backgroundColor: 'rgba(0, 123, 255, 0.5)',
           borderColor: 'rgba(0, 123, 255, 1)',
           borderWidth: 1
@@ -176,13 +236,20 @@
       },
       options: {
         scales: {
-          y: {
-            beginAtZero: true
-          }
+          y: { beginAtZero: true }
         }
       }
     });
-  </script>
 
+    // FullCalendar Initialization (for calendar section)
+    $(document).ready(function() {
+      $('#calendar').fullCalendar();
+    });
+
+    // Add Task Functionality (FAB Button)
+    function addTask() {
+      alert('Add New Task Modal Here');
+    }
+  </script>
 </body>
 </html>
